@@ -1,0 +1,17 @@
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+	<contextName>MSS-CONFIG</contextName>
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%contextName]%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<root level="debug">
+	</root>
+	<logger name="com.ai" level="${log.mss.level}" additivity="true">
+		<appender-ref ref="stdout" />
+	</logger>
+	
+</configuration>

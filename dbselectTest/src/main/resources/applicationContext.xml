@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	
+	<context:property-placeholder location="classpath:config.ini" />
+	<!-- Annotation support和包扫描 -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.ai" />
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 數據源配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<!-- 链接设置 -->
+		<property name="driverClass" value="${db_driver}" />
+		<property name="jdbcUrl" value="${db_url}" />
+		<property name="user" value="${db_user}" />
+		<property name="password" value="${db_password}" />
+		<!-- 数据源参数 -->
+		<property name="initialPoolSize"  value="${c3p0_initialPoolSize}" />
+		<property name="maxPoolSize"  value="${c3p0_maxPoolSize}" />
+		<property name="minPoolSize"  value="${c3p0_minPoolSize}" />
+		<property name="maxIdleTime"  value="${c3p0_maxIdleTime}" />
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 --> 
+		<property name="acquireIncrement"  value="${c3p0_acquireIncrement}" /> 
+		<!--每60秒检查所有连接池中的空闲连接。Default: 0 --> 
+		<property name="idleConnectionTestPeriod"  value="${c3p0_idleConnectionTestPeriod}" />
+		<!--如果设为true那么在取得连接的同时将校验连接的有效性。Default: false --> 
+		<property name="testConnectionOnCheckin"  value="${c3p0_testConnectionOnCheckin}" />
+		<property name="testConnectionOnCheckout"  value="${c3p0_testConnectionOnCheckout}" />
+		<property name="preferredTestQuery"  value="${c3p0_preferredTestQuery}" /> 
+		<property name="checkoutTimeout" value="${c3p0_checkoutTimeout}" />
+	</bean>
+	<!-- 數據源配置 -->
+	<bean id="dataSource_read1" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<!-- 链接设置 -->
+		<property name="driverClass" value="${db_driver1}" />
+		<property name="jdbcUrl" value="${db_url1}" />
+		<property name="user" value="${db_user1}" />
+		<property name="password" value="${db_password1}" />
+		<!-- 数据源参数 -->
+		<property name="initialPoolSize"  value="${c3p0_initialPoolSize}" />
+		<property name="maxPoolSize"  value="${c3p0_maxPoolSize}" />
+		<property name="minPoolSize"  value="${c3p0_minPoolSize}" />
+		<property name="maxIdleTime"  value="${c3p0_maxIdleTime}" />
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 --> 
+		<property name="acquireIncrement"  value="${c3p0_acquireIncrement}" /> 
+		<!--每60秒检查所有连接池中的空闲连接。Default: 0 --> 
+		<property name="idleConnectionTestPeriod"  value="${c3p0_idleConnectionTestPeriod}" />
+		<!--如果设为true那么在取得连接的同时将校验连接的有效性。Default: false --> 
+		<property name="testConnectionOnCheckin"  value="${c3p0_testConnectionOnCheckin}" />
+		<property name="testConnectionOnCheckout"  value="${c3p0_testConnectionOnCheckout}" />
+		<property name="preferredTestQuery"  value="${c3p0_preferredTestQuery}" /> 
+		<property name="checkoutTimeout" value="${c3p0_checkoutTimeout}" />
+	</bean>
+	<!-- 數據源配置 -->
+	<bean id="dataSource_read2" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<!-- 链接设置 -->
+		<property name="driverClass" value="${db_driver2}" />
+		<property name="jdbcUrl" value="${db_url2}" />
+		<property name="user" value="${db_user2}" />
+		<property name="password" value="${db_password2}" />
+		<!-- 数据源参数 -->
+		<property name="initialPoolSize"  value="${c3p0_initialPoolSize}" />
+		<property name="maxPoolSize"  value="${c3p0_maxPoolSize}" />
+		<property name="minPoolSize"  value="${c3p0_minPoolSize}" />
+		<property name="maxIdleTime"  value="${c3p0_maxIdleTime}" />
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 --> 
+		<property name="acquireIncrement"  value="${c3p0_acquireIncrement}" /> 
+		<!--每60秒检查所有连接池中的空闲连接。Default: 0 --> 
+		<property name="idleConnectionTestPeriod"  value="${c3p0_idleConnectionTestPeriod}" />
+		<!--如果设为true那么在取得连接的同时将校验连接的有效性。Default: false --> 
+		<property name="testConnectionOnCheckin"  value="${c3p0_testConnectionOnCheckin}" />
+		<property name="testConnectionOnCheckout"  value="${c3p0_testConnectionOnCheckout}" />
+		<property name="preferredTestQuery"  value="${c3p0_preferredTestQuery}" /> 
+		<property name="checkoutTimeout" value="${c3p0_checkoutTimeout}" />
+	</bean>
+	 <!-- 配置动态数据源 -->
+	<bean id="dynamicDataSource" class="com.ai.dbselect.datasource.DynamicDataSource">
+		<!-- 通过key-value的形式来关联数据源 -->
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry value-ref="dataSource" key="ds"></entry>
+				<entry value-ref="dataSource_read1" key="dsr1"></entry>
+				<entry value-ref="dataSource_read1" key="dsr2"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="dataSource" />
+	</bean>
+	<!-- 事務配置 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- mybatis配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dynamicDataSource" />
+		<property name="configLocation" value="classpath:mybatis-conf.xml" />
+		<property name="mapperLocations" >
+			<array>
+				<value>classpath*:mybatis-mapper.xml</value>
+				<value>classpath*:mapper/*.xml</value>
+				<!-- <value>classpath*:com/ai/mss/**/*_sqlmap.xml</value> -->
+			</array>
+		</property>
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+</beans>

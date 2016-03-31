@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<insert id="insert" parameterType="com.ai.dbselectTest.User" useGeneratedKeys="true" keyProperty="id">
+		insert into users(name) values(#{name})
+	</insert>
+	<delete id="del" parameterType="long">
+		delete from users where id=#{id}
+	</delete>
+	<update id="update" parameterType="com.ai.dbselectTest.User">
+		update users
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<resultMap type="com.ai.dbselectTest.User" id="userMap">
+		<id column="id" property="id" />
+		<result column="name" property="name"/>
+	</resultMap>
+	<select id="selectById" parameterType="long" resultMap="userMap">
+		select * from users where id=#{id}
+	</select>
+</mapper>
