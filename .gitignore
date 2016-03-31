@@ -10,3 +10,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# 
+db-select/.classpath
+db-select/.project
+db-select/.svn/
+db-select/.settings/
+db-select/target/
+dbselectTest/.classpath
+dbselectTest/.project
+dbselectTest/.svn/
+dbselectTest/.settings/
+dbselectTest/target/
